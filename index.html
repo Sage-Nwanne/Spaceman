@@ -8,7 +8,19 @@
     <title>Document</title>
 </head>
 <body>
-   <h1>Spaceman</h1> 
-   <h2>Select a letter</h2>
+    <div class="container">
+        <h1>Hangman Game</h1>
+        <label for="difficulty-select">Select Difficulty:</label>
+        
+        <select id="difficulty-select">
+            <option value="easy">Easy (1-3)</option>
+            <option value="medium">Medium (4-6)</option>
+            <option value="hard">Hard (7-10)</option>
+        </select>
+
+        <div id="word-display">Click "Next Word"</div>
+        <button id="next-word-button">Next Word</button>
+    </div>
+
 </body>
 </html>
