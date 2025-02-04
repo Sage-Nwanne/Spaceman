@@ -40,19 +40,21 @@ const hiddenWords = [
   { word: 'mesopotamia', usedAlready: false, dificulty: 10 }
 ];
 
-// State variables
+let selectedWord = ''; // stores curretnly selected word
 let filteredWords = []; // Stores words filtered by difficulty
 let lastWord = null; // Stores last selected word to prevent consecutive repeats
 let currentDifficulty = "easy"; // Default difficulty
-
+let attemptsLeft = 10;
+let wrongGuesses = [];
 
 //============================== Cached Element References =========================
 
-
-const wordDisplay = document.getElementById("word-display"); // Example
 const difficultySelect = document.getElementById("difficulty-select");
-const nextWordButton = document.getElementById("next-word-button");
-
+const startGameButton = document.getElementById("start-game-button");
+const wordDisplay = document.getElementById("word-display");
+const wrongLettersContainer = document.getElementById("wrong-letters");
+const attemptsCount = document.getElementById("attempts-count");
+const hangmanImage = document.getElementById("hangman-image");
 
 //===================================  Functions ===================================
 
@@ -136,11 +138,15 @@ function handleDifficultyChange() {
 
 //================================== Event Listeners ===============================
 
-// Listen for difficulty change
-difficultySelect.addEventListener("change", handleDifficultyChange);
+// Start game button
+startGameButton.addEventListener("click", startGame);
 
-// Listen for next word button click
-nextWordButton.addEventListener("click", displayNextWord);
+// Listen for keyboard input. checks if input is a-z or A-Z. allow caps
+document.addEventListener("keydown", (event) => {
+    if (/^[a-zA-Z]$/.test(event.key)) {
+        handleGuess(event.key);
+    }
+  })
 
 // Initialize game with default difficulty
 setDifficulty("easy");

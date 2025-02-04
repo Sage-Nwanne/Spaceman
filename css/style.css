@@ -85,3 +85,10 @@ button:hover {
     border: #000000;
     border-radius: 10px;
 }
+
+.wrong-letter {
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+    text-decoration: line-through;
+}
