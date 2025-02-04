@@ -67,6 +67,71 @@ function shuffleWords(arr) {
   }
 }
 
+/**
+* Sets the difficulty level and filters words accordingly.
+* @param {string} level - Difficulty level ("easy", "medium", "hard").
+*/
+function setDifficulty(level) {
+  if (level === "easy") {
+      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty >= 1 && wordObj.dificulty <= 3);
+  } else if (level === "medium") {
+      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty >= 4 && wordObj.dificulty <= 6);
+  } else if (level === "hard") {
+      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty >= 7 && wordObj.dificulty <= 10);
+  } else {
+      throw new Error("Invalid difficulty level. Choose 'easy', 'medium', or 'hard'.");
+  }
+
+  currentDifficulty = level; // Store selected difficulty
+  filteredWords.forEach(wordObj => wordObj.usedAlready = false); // Reset words
+  shuffleWords(filteredWords); // Shuffle new filtered list
+}
+
+/**
+* Gets the next random word from the filtered list.
+* Ensures that the same word is not repeated consecutively.
+* @returns {Object|null} - The selected word object or null if no words available.
+*/
+function getNextWord() {
+  // If all words in the current difficulty are used, reset and reshuffle
+  if (filteredWords.every(wordObj => wordObj.usedAlready)) {
+      filteredWords.forEach(wordObj => wordObj.usedAlready = false);
+      shuffleWords(filteredWords);
+  }
+
+  let nextWordObj;
+  do {
+      nextWordObj = filteredWords.find(wordObj => !wordObj.usedAlready);
+  } while (nextWordObj && nextWordObj.word === lastWord);
+
+  if (nextWordObj) {
+      nextWordObj.usedAlready = true;
+      lastWord = nextWordObj.word;
+      return nextWordObj;
+  } else {
+      return null; // Shouldn't happen due to reset logic
+  }
+}
+
+/**
+* Updates the UI with the next word.
+*/
+function displayNextWord() {
+  const nextWordObj = getNextWord();
+  if (nextWordObj) {
+      wordDisplay.textContent = nextWordObj.word; // Update the UI
+  } else {
+      wordDisplay.textContent = "No words available.";
+  }
+}
+
+/**
+* Handles difficulty change from the dropdown.
+*/
+function handleDifficultyChange() {
+  const newDifficulty = difficultySelect.value;
+  setDifficulty(newDifficulty);
+}
 
 
 //================================== Event Listeners ===============================
