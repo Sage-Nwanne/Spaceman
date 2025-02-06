@@ -94,6 +94,7 @@ function setDifficulty(level) {
 * Ensures that the same word is not repeated consecutively.
 * @returns {Object|null} - The selected word object or null if no words available.
 */
+
 function getNextWord() {
   // If all words in the current difficulty are used, reset and reshuffle
   if (filteredWords.every(wordObj => wordObj.usedAlready)) {
