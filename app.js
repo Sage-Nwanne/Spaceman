@@ -1,22 +1,5 @@
-/*
-to create a string of underscores according to the legnth of the word selected:
-
-for (let u = 0, u < hiddenWord.word.length, u++){
-if(usedAlready === false){
- let underscores = hiddenWord.word. length
-====== still working on it=======
-  }}
-
-
-to call specific word (object):
-hiddenWord.word[].length
-
-*/
-
-
 //================================== Variables =====================================
 
-// Word list with difficulties
 const hiddenWords = [
   { word: 'apple', usedAlready: false, dificulty: 1 },
   { word: 'pineapple', usedAlready: false, dificulty: 3 },
@@ -40,12 +23,13 @@ const hiddenWords = [
   { word: 'mesopotamia', usedAlready: false, dificulty: 10 }
 ];
 
-let selectedWord = ''; // stores curretnly selected word
+let selectedWord = ''; // Stores the currently selected word
 let filteredWords = []; // Stores words filtered by difficulty
 let lastWord = null; // Stores last selected word to prevent consecutive repeats
 let currentDifficulty = "easy"; // Default difficulty
-let attemptsLeft = 10;
-let wrongGuesses = [];
+let attemptsLeft = 6; // Maximum attempts before losing
+let guessedLetters = []; // Stores correct guesses
+let wrongGuesses = []; // Stores incorrect guesses
 
 //============================== Cached Element References =========================
 
@@ -54,101 +38,66 @@ const startGameButton = document.getElementById("start-game-button");
 const wordDisplay = document.getElementById("word-display");
 const wrongLettersContainer = document.getElementById("wrong-letters");
 const attemptsCount = document.getElementById("attempts-count");
-const hangmanImage = document.getElementById("hangman-image");
+const gameInfoContainer = document.getElementById("game-info-container");
 
-//===================================  Functions ===================================
+//=================================== Functions ===================================
 
-/**
-* Shuffles an array using Fisher-Yates algorithm.
-* @param {Array} arr - The array to shuffle.
-*/
-function shuffleWords(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap elements
-  }
-}
-
-/**
-* Sets the difficulty level and filters words accordingly.
-* @param {string} level - Difficulty level ("easy", "medium", "hard").
-*/
 function setDifficulty(level) {
-  if (level === "easy") {
-      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty >= 1 && wordObj.dificulty <= 3);
-  } else if (level === "medium") {
-      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty >= 4 && wordObj.dificulty <= 6);
-  } else if (level === "hard") {
-      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty >= 7 && wordObj.dificulty <= 10);
-  } else {
-      throw new Error("Invalid difficulty level. Choose 'easy', 'medium', or 'hard'.");
-  }
-
-  currentDifficulty = level; // Store selected difficulty
-  filteredWords.forEach(wordObj => wordObj.usedAlready = false); // Reset words
-  shuffleWords(filteredWords); // Shuffle new filtered list
+    currentDifficulty = level;
+    filteredWords = hiddenWords.filter(wordObj => {
+        return level === "easy" ? wordObj.dificulty <= 3 :
+               level === "medium" ? wordObj.dificulty >= 4 && wordObj.dificulty <= 6 :
+               wordObj.dificulty >= 7;
+    });
 }
 
-/**
-* Gets the next random word from the filtered list.
-* Ensures that the same word is not repeated consecutively.
-* @returns {Object|null} - The selected word object or null if no words available.
-*/
+function getRandomWord() {
+    if (filteredWords.length === 0) setDifficulty(currentDifficulty);
+    
+    let newWord;
+    do {
+        newWord = filteredWords[Math.floor(Math.random() * filteredWords.length)].word.toLowerCase();
+    } while (newWord === lastWord);
 
-function getNextWord() {
-  // If all words in the current difficulty are used, reset and reshuffle
-  if (filteredWords.every(wordObj => wordObj.usedAlready)) {
-      filteredWords.forEach(wordObj => wordObj.usedAlready = false);
-      shuffleWords(filteredWords);
-  }
-
-  let nextWordObj;
-  do {
-      nextWordObj = filteredWords.find(wordObj => !wordObj.usedAlready);
-  } while (nextWordObj && nextWordObj.word === lastWord);
-
-  if (nextWordObj) {
-      nextWordObj.usedAlready = true;
-      lastWord = nextWordObj.word;
-      return nextWordObj;
-  } else {
-      return null; // Shouldn't happen due to reset logic
-  }
+    lastWord = newWord;
+    return newWord;
 }
 
-/**
-* Updates the UI with the next word.
-*/
-function displayNextWord() {
-  const nextWordObj = getNextWord();
-  if (nextWordObj) {
-      wordDisplay.textContent = nextWordObj.word; // Update the UI
-  } else {
-      wordDisplay.textContent = "No words available.";
-  }
+function startGame() {
+    gameInfoContainer.classList.remove("hidden"); // Show the game elements
+
+    setDifficulty(difficultySelect.value);
+    selectedWord = getRandomWord();
+    guessedLetters = [];
+    wrongGuesses = [];
+    attemptsLeft = 6;
+
+    updateWordDisplay();
+    updateWrongGuesses();
+    updateAttempts();
+    hideHangmanParts();
 }
 
-/**
-* Handles difficulty change from the dropdown.
-*/
-function handleDifficultyChange() {
-  const newDifficulty = difficultySelect.value;
-  setDifficulty(newDifficulty);
+function updateWordDisplay() {
+    wordDisplay.textContent = selectedWord
+        .split("")
+        .map(letter => (guessedLetters.includes(letter) ? letter : "_"))
+        .join(" ");
 }
 
+function updateWrongGuesses() {
+    wrongLettersContainer.innerHTML = wrongGuesses.map(letter => `<span class="wrong-letter">${letter} ❌</span>`).join(" ");
+}
+
+function updateAttempts() {
+    attemptsCount.textContent = attemptsLeft;
+    if (attemptsLeft < 4) {
+        attemptsCount.classList.add("low-attempts");
+    } else {
+        attemptsCount.classList.remove("low-attempts");
+    }
+}
 
 //================================== Event Listeners ===============================
 
-// Start game button
 startGameButton.addEventListener("click", startGame);
-
-// Listen for keyboard input. checks if input is a-z or A-Z. allow caps
-document.addEventListener("keydown", (event) => {
-    if (/^[a-zA-Z]$/.test(event.key)) {
-        handleGuess(event.key);
-    }
-  })
-
-// Initialize game with default difficulty
-setDifficulty("easy");
-displayNextWord(); // Show first word

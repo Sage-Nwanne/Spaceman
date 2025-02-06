@@ -4,25 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <script src=""></script>
-    <title>Document</title>
+    <script defer src="./app.js"></script>
+    <title>Spaceman Game</title>
 </head>
 <body>
-    <div class="container">
+    <div class="starting-page-container">
         <h1>Spaceman Game</h1>
-        <label for="difficulty-select">Select Difficulty:</label>
 
+        <label for="difficulty-select">Select Difficulty:</label>
         <select id="difficulty-select">
             <option value="easy">Easy</option>
-            <option value="medium">Medium </option>
+            <option value="medium">Medium</option>
             <option value="hard">Hard</option>
         </select>
 
-        <div id="word-display">Click "Next Word"</div>
         <button id="start-game-button">Start Game</button>
     </div>
-    <img src="https://nstxl.org/wp-content/uploads/2023/08/Success-Story-KANAGWA-1.png" alt="Space-Background">
 
+    <!-- Wrong Guesses & Attempts Left Boxes (Initially Hidden) -->
+    <div id="game-info-container" class="hidden">
+        <div id="wrong-guesses">
+            <h3>Wrong Guesses</h3>
+            <div id="wrong-letters"></div>
+        </div>
 
+        <div id="game-container">
+            <div id="hangman-container">
+                <div id="hangman-image">
+                    <div class="hangman-part" id="part-1"></div>
+                    <div class="hangman-part" id="part-2"></div>
+                    <div class="hangman-part" id="part-3"></div>
+                    <div class="hangman-part" id="part-4"></div>
+                    <div class="hangman-part" id="part-5"></div>
+                    <div class="hangman-part" id="part-6"></div>
+                </div>
+            </div>
+
+            <div id="word-display"></div>
+        </div>
+
+        <div id="attempts-container">
+            <h3>Attempts Left</h3>
+            <p id="attempts-count">6</p>
+        </div>
+    </div>
 </body>
 </html>
