@@ -43,13 +43,17 @@ const gameInfoContainer = document.getElementById("game-info-container");
 //=================================== Functions ===================================
 
 function setDifficulty(level) {
-    currentDifficulty = level;
-    filteredWords = hiddenWords.filter(wordObj => {
-        return level === "easy" ? wordObj.dificulty <= 3 :
-               level === "medium" ? wordObj.dificulty >= 4 && wordObj.dificulty <= 6 :
-               wordObj.dificulty >= 7;
-    });
+  currentDifficulty = level; // Store the selected difficulty
+
+  if (level === "easy") {
+      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty <= 3);
+  } else if (level === "medium") {
+      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty >= 4 && wordObj.dificulty <= 6);
+  } else {
+      filteredWords = hiddenWords.filter(wordObj => wordObj.dificulty >= 7);
+  }
 }
+
 
 function getRandomWord() {
     if (filteredWords.length === 0) setDifficulty(currentDifficulty);

@@ -14,6 +14,7 @@ body {
 }
 
 .starting-page-container {
+    /* display: flex; */
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -31,7 +32,16 @@ h1 {
     font-size: 46px;
 }
 
-select {
+label[for = 'difficulty-select'] {
+    font-size: larger;
+    color: white;
+
+
+}
+
+
+
+#difficulty-dropdown {
     padding: 4px;
     font-size: 18px;
     border: 2px solid #000000;
@@ -39,6 +49,21 @@ select {
     margin: 10px 0;
     max-width: 100px;
 }
+
+#start-game-button {
+    font-size: 25px;
+    border: 2px solid black;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    padding: 6px;
+}
+
+
+
+
 
 /* Hide game elements before game starts */
 .hidden {
@@ -101,14 +126,14 @@ select {
 #hangman-container {
     margin-top: 20px;
     width: 300px;
-    height: 400px;
+    height: 410px;
     position: relative;
 }
 
 #hangman-image {
     width: 100%;
     height: 100%;
-    background-image: url("C:\Users\Flotto\Pictures\discord stickers\1346-cry-stickersgg.png");
+    background-image: url('https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp');
     background-size: cover;
     position: relative;
 }
