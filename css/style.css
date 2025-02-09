@@ -13,6 +13,12 @@ body {
     height: 100vh;
 }
 
+/* Hide game elements before game starts */
+.hidden {
+    display: none !important;
+}
+
+
 .starting-page-container {
     /* display: flex; */
     flex-direction: column;
@@ -65,42 +71,63 @@ label[for = 'difficulty-select'] {
 
 
 
-/* Hide game elements before game starts */
-.hidden {
-    display: none;
-}
 
 /* Game Info Layout */
 #game-info-container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
     max-width: 800px;
     margin-top: 20px;
 }
 
+#word-display {
+    display: flex;
+    justify-content: center;
+    font-size: 46px;
+    letter-spacing: 10px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+
+
+
 /* Wrong Guesses (Left Side) */
 #wrong-guesses {
-    width: 30%;
-    padding: 10px;
-    border: 2px solid #ff0000;
-    border-radius: 5px;
+    position: absolute;
+    left: 10px;
+    top: 50px;
+    width: 150px;
     text-align: center;
+    padding: 10px;
+    border: 2px solid red;
+    border-radius: 5px;
     color: white;
 }
 
 #wrong-letters {
-    font-size: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
     color: red;
 }
 
+
 /* Attempts Left (Right Side) */
 #attempts-container {
-    width: 30%;
+    position: absolute;
+    right: 10px;
+    top: 50px;
+    width: 150px;
+    text-align: center;
     padding: 10px;
     border: 2px solid #333;
     border-radius: 5px;
-    text-align: center;
     color: white;
 }
 
@@ -124,31 +151,100 @@ label[for = 'difficulty-select'] {
 }
 
 #hangman-container {
-    margin-top: 20px;
-    width: 300px;
-    height: 410px;
+    width: 362px; /* Expand to fit full image */
+    height: 362px;
     position: relative;
-}
-
-#hangman-image {
-    width: 100%;
-    height: 100%;
-    background-image: url('https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp');
-    background-size: cover;
-    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    overflow: hidden;
 }
 
 /* Hidden Parts of the Image */
+
 .hangman-part {
     width: 100%;
-    height: 16.6%;
+    height: 60.33px; /* image height divided by six parrs */
+    overflow: hidden;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.9);
+    left:0;
+    visibility: hidden;
 }
 
-#part-1 { top: 0%; }
-#part-2 { top: 16.6%; }
-#part-3 { top: 33.2%; }
-#part-4 { top: 49.8%; }
-#part-5 { top: 66.4%; }
-#part-6 { top: 83%; }
+#hangman-part img {
+    width: 100%;
+    height: 362px;
+    object-fit: cover;
+    position: absolute;
+
+}
+
+#part-1 { top: 0px; }
+#part-2 { top: 60.33px; }
+#part-3 { top: 120.66px; }
+#part-4 { top: 181px; }
+#part-5 { top: 241.33px; }
+#part-6 { top: 301.66px; }
+
+
+#part-1 img { top: 0px; }
+#part-2 img { top: -60.33px; }
+#part-3 img { top: -120.66px; }
+#part-4 img { top: -181px; }
+#part-5 img { top: -241.33px; }
+#part-6 img { top: -301.66px; }
+
+
+
+#lose-message, #win-message {
+    display: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin-top: 10px;
+}
+
+
+#keyboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.keyboard-row {
+    display: flex;
+    justify-content: center;
+}
+
+.key {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid #000;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 5px;
+}
+
+.key.disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+#play-again-button {
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    display: none; /* Hide it initially */
+}

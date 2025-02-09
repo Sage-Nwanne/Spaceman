@@ -1,3 +1,16 @@
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("game-info-container").classList.add("hidden");
+    document.getElementById("start-game-button").addEventListener("click", startGame);
+    startGameButton.addEventListener('click', startGame);
+});
+
+
+// To avoid startGame() from running too early
+
+
+
+
+
 //================================== Variables =====================================
 
 const hiddenWords = [
@@ -33,12 +46,31 @@ let wrongGuesses = []; // Stores incorrect guesses
 
 //============================== Cached Element References =========================
 
-const difficultySelect = document.getElementById("difficulty-select");
+const difficultySelect = document.getElementById("difficulty-dropdown");
 const startGameButton = document.getElementById("start-game-button");
 const wordDisplay = document.getElementById("word-display");
 const wrongLettersContainer = document.getElementById("wrong-letters");
 const attemptsCount = document.getElementById("attempts-count");
 const gameInfoContainer = document.getElementById("game-info-container");
+const keyboardContainer = document.getElementById("keyboard-container");
+
+
+
+
+
+//================================== Event Listeners ===============================
+
+startGameButton.addEventListener("click", startGame);
+
+keyboardContainer.addEventListener("click", function(event) {
+    if (event.target.classList.contains("key") && !event.target.classList.contains("disabled")) {
+        let letter = event.target.dataset.letter.toLowerCase(); // Get clicked letter
+        handleGuess(letter); // Process the guess
+        disableKey(event.target); // Disable key after it's clicked
+    }
+});
+
+
 
 //=================================== Functions ===================================
 
@@ -61,25 +93,10 @@ function getRandomWord() {
     let newWord;
     do {
         newWord = filteredWords[Math.floor(Math.random() * filteredWords.length)].word.toLowerCase();
-    } while (newWord === lastWord);
+    } while (newWord === lastWord); //if new word is same as last, it runs it again
 
-    lastWord = newWord;
+    lastWord = newWord; // gets stored in last word to avoid the same issue for next round
     return newWord;
-}
-
-function startGame() {
-    gameInfoContainer.classList.remove("hidden"); // Show the game elements
-
-    setDifficulty(difficultySelect.value);
-    selectedWord = getRandomWord();
-    guessedLetters = [];
-    wrongGuesses = [];
-    attemptsLeft = 6;
-
-    updateWordDisplay();
-    updateWrongGuesses();
-    updateAttempts();
-    hideHangmanParts();
 }
 
 function updateWordDisplay() {
@@ -102,6 +119,110 @@ function updateAttempts() {
     }
 }
 
-//================================== Event Listeners ===============================
+function hideHangmanParts() {
+    // Select all parts of the hangman image
+    document.querySelectorAll(".hangman-part").forEach(part => {
+        part.style.visibility = "hidden"; // Hide each part
+    });
 
-startGameButton.addEventListener("click", startGame);
+    document.getElementById('hangman-container').style.visibility = 'hidden';
+}
+
+function checkWinCondition() {
+    let displayedWord = wordDisplay.textContent.replace(/ /g, "");
+    if (displayedWord === selectedWord) {
+        document.getElementById("win-message").classList.remove("hidden");
+        document.getElementById("play-again-button").classList.remove("hidden");
+        disableAllKeys(); // Prevent further guesses
+    }
+}
+
+
+
+function revealHangmanPart() {
+    let incorrectAttempts = 6 - attemptsLeft; // Calculate how many mistakes have been made
+    let hangmanParts = document.querySelectorAll(".hangman-part");
+
+
+    if (attemptsLeft < 6) {
+        document.getElementById("hangman-container").style.visibility = 'visible';
+    }
+
+    if (incorrectAttempts < hangmanParts.length) {
+        hangmanParts[incorrectAttempts].style.visibility = "visible"; //reveal next image part
+    }
+
+    if (attemptsLeft <= 0) {
+        hangmanParts.forEach(part => part.style.visibility = "visible"); //reveal fuill image if player loses
+        document.getElementById("lose-message").style.display = "block";
+        document.getElementById("lose-message").classList.remove("hidden");
+        document.getElementById("play-again-button").classList.remove("hidden");
+    
+        
+    }
+
+
+}
+
+
+
+
+function handleGuess(letter) {
+    if (guessedLetters.includes(letter) || wrongGuesses.includes(letter)) {
+        return; // Ignore duplicate guesses
+    }
+
+    if (selectedWord.includes(letter)) {
+        guessedLetters.push(letter); // Add correct guess
+    } else {
+        wrongGuesses.push(letter); // Add incorrect guess
+        attemptsLeft--; // Decrease attempts
+        revealHangmanPart(); // Show a part of the hangman
+    }
+
+    updateWordDisplay();
+    updateWrongGuesses();
+    updateAttempts();
+    checkWinCondition();
+}
+
+
+
+
+
+
+
+
+function startGame() {
+
+    // document.getElementById("lose-message").style.display = "none"; //hides from previous game(s)
+    // document.getElementById("win-message").style.display = "none";
+
+    hideHangmanParts(); // Reset image on game restart
+    
+    document.getElementById("game-info-container").classList.remove("hidden");
+    document.querySelector(".starting-page-container").classList.add("hidden");
+
+  setDifficulty(difficultySelect.value);
+  selectedWord = getRandomWord();
+  guessedLetters = [];
+  wrongGuesses = [];
+  attemptsLeft = 6;
+
+  updateWordDisplay();
+  updateWrongGuesses();
+  updateAttempts();
+  hideHangmanParts();
+}
+
+function disableKey(button) {
+    button.classList.add("disabled");
+}
+
+document.getElementById("play-again-button").addEventListener("click", restartGame);
+
+function restartGame() {
+    location.reload(); // Reloads the page to reset the game
+}
+
+

@@ -27,27 +27,72 @@
             <h3>Wrong Guesses</h3>
             <div id="wrong-letters"></div>
         </div>
-
+            <!-- hangman imgage container -->
         <div id="game-container">
             <div id="hangman-container">
                 <div id="hangman-image">
-                    <div class="hangman-part" id="part-1"></div>
-                    <div class="hangman-part" id="part-2"></div>
-                    <div class="hangman-part" id="part-3"></div>
-                    <div class="hangman-part" id="part-4"></div>
-                    <div class="hangman-part" id="part-5"></div>
-                    <div class="hangman-part" id="part-6"></div>
+                    <div class="hangman-part" id="part-1"><img src="https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp"></div>
+                    <div class="hangman-part" id="part-2"><img src="https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp"></div>
+                    <div class="hangman-part" id="part-3"><img src="https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp"></div>
+                    <div class="hangman-part" id="part-4"><img src="https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp"></div>
+                    <div class="hangman-part" id="part-5"><img src="https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp"></div>
+                    <div class="hangman-part" id="part-6"><img src="https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp"></div>
                 </div>
+            </div>
             </div>
 
             <div id="word-display"></div>
-        </div>
+
+            <!-- adding keyboard buttons row by row  -->
+        <div id="keyboard-container"> 
+            <div class="keyboard-row">
+                <button class="key" data-letter="a">A</button>
+                <button class="key" data-letter="b">B</button>
+                <button class="key" data-letter="c">C</button>
+                <button class="key" data-letter="d">D</button>
+                <button class="key" data-letter="e">E</button>
+                <button class="key" data-letter="f">F</button>
+                <button class="key" data-letter="g">G</button>
+                <button class="key" data-letter="h">H</button>
+                <button class="key" data-letter="i">I</button>
+                <button class="key" data-letter="j">J</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key" data-letter="k">K</button>
+                <button class="key" data-letter="l">L</button>
+                <button class="key" data-letter="m">M</button>
+                <button class="key" data-letter="n">N</button>
+                <button class="key" data-letter="o">O</button>
+                <button class="key" data-letter="p">P</button>
+                <button class="key" data-letter="q">Q</button>
+                <button class="key" data-letter="r">R</button>
+                <button class="key" data-letter="s">S</button>
+                <button class="key" data-letter="t">T</button>
+            </div>
+            <div class="keyboard-row">
+                <button class="key" data-letter="u">U</button>
+                <button class="key" data-letter="v">V</button>
+                <button class="key" data-letter="w">W</button>
+                <button class="key" data-letter="x">X</button>
+                <button class="key" data-letter="y">Y</button>
+                <button class="key" data-letter="z">Z</button>
+            </div>
+        </div>    
+    
 
         <div id="attempts-container">
             <h3>Attempts Left</h3>
             <p id="attempts-count">6</p>
+
+
+
+             <!-- Win & Lose Messages -->
+             <p id="win-message" class="hidden">🎉 You Won! 🎉</p>
+             <p id="lose-message" class="hidden">❌ You Lose! ❌</p>
+
+             <button id="play-again-button" class="hidden">Play Again</button>
         </div>
+        <button id="play-again-button">Play Again</button>
     </div>
-    <div id="keyboard-container" class="hidden"></div>
 </body>
 </html>
