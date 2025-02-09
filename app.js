@@ -1,15 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("game-info-container").classList.add("hidden");
     document.getElementById("start-game-button").addEventListener("click", startGame);
-    startGameButton.addEventListener('click', startGame);
+    document.getElementById("play-again-button").addEventListener("click", restartGame);
 });
-
-
-// To avoid startGame() from running too early
-
-
-
-
 
 //================================== Variables =====================================
 
@@ -53,7 +46,7 @@ const wrongLettersContainer = document.getElementById("wrong-letters");
 const attemptsCount = document.getElementById("attempts-count");
 const gameInfoContainer = document.getElementById("game-info-container");
 const keyboardContainer = document.getElementById("keyboard-container");
-
+const playAgainButton = document.getElementById("play-again-button");
 
 
 
@@ -66,11 +59,14 @@ keyboardContainer.addEventListener("click", function(event) {
     if (event.target.classList.contains("key") && !event.target.classList.contains("disabled")) {
         let letter = event.target.dataset.letter.toLowerCase(); // Get clicked letter
         handleGuess(letter); // Process the guess
-        disableKey(event.target); // Disable key after it's clicked
+        event.target.classList.add("disabled");
+        event.target.disabled = true; // Disable key after it's clicked
     }
 });
 
-
+document.getElementById("play-again-button").addEventListener("click", function() {
+    location.reload(); // play again button reloads page
+});
 
 //=================================== Functions ===================================
 
@@ -112,12 +108,30 @@ function updateWrongGuesses() {
 
 function updateAttempts() {
     attemptsCount.textContent = attemptsLeft;
-    if (attemptsLeft < 4) {
-        attemptsCount.classList.add("low-attempts");
-    } else {
-        attemptsCount.classList.remove("low-attempts");
-    }
+    attemptsCount.classList.toggle("low-attempts", attemptsLeft < 4); //cleaner than if else statement
 }
+
+function disableKey(button) { //when a key is clicked
+    button.classList.add("disabled");
+    button.disabled = true;
+}
+
+
+function disableAllKeys() { //when game is over an all keys need to be disabled
+    document.querySelectorAll(".key").forEach(button => {
+        button.classList.add("disabled");
+        button.disabled = true; 
+    });
+}
+
+function enableAllKeys() { //when game is starting and all keys need to be enabled
+    document.querySelectorAll(".key").forEach(button => {
+        button.classList.remove("disabled");
+        button.disabled = false;
+    });
+}
+
+
 
 function hideHangmanParts() {
     // Select all parts of the hangman image
@@ -127,17 +141,6 @@ function hideHangmanParts() {
 
     document.getElementById('hangman-container').style.visibility = 'hidden';
 }
-
-function checkWinCondition() {
-    let displayedWord = wordDisplay.textContent.replace(/ /g, "");
-    if (displayedWord === selectedWord) {
-        document.getElementById("win-message").classList.remove("hidden");
-        document.getElementById("play-again-button").classList.remove("hidden");
-        disableAllKeys(); // Prevent further guesses
-    }
-}
-
-
 
 function revealHangmanPart() {
     let incorrectAttempts = 6 - attemptsLeft; // Calculate how many mistakes have been made
@@ -156,20 +159,36 @@ function revealHangmanPart() {
         hangmanParts.forEach(part => part.style.visibility = "visible"); //reveal fuill image if player loses
         document.getElementById("lose-message").style.display = "block";
         document.getElementById("lose-message").classList.remove("hidden");
-        document.getElementById("play-again-button").classList.remove("hidden");
-    
-        
+        playAgainButton.classList.remove('hidden')
+        playAgainButton.classList.add("show");
+        disableAllKeys();   
     }
+}
 
-
+function checkWinCondition() {
+    let displayedWord = wordDisplay.textContent.replace(/ /g, "");
+    if (displayedWord === selectedWord) {
+        document.getElementById("win-message").classList.remove("hidden");
+        playAgainButton.classList.remove('hidden')
+        playAgainButton.classList.add("show");
+        disableAllKeys();   
+    }
 }
 
 
 
 
+
 function handleGuess(letter) {
-    if (guessedLetters.includes(letter) || wrongGuesses.includes(letter)) {
-        return; // Ignore duplicate guesses
+
+    if (attemptsLeft <= 0 || guessedLetters.includes(letter) || wrongGuesses.includes(letter)) {
+        return; // Prevent guessing after losing or if the letter was already guessed
+    }
+
+    let clickedKey = document.querySelector(`.key[data-letter="${letter}"]`);
+    if (clickedKey) {
+        clickedKey.classList.add("disabled");
+        clickedKey.disabled = true; // Disable only the clicked key
     }
 
     if (selectedWord.includes(letter)) {
@@ -184,42 +203,35 @@ function handleGuess(letter) {
     updateWrongGuesses();
     updateAttempts();
     checkWinCondition();
+
+    if (attemptsLeft <= 0) {
+        disableAllKeys();
+    }
+
+
 }
-
-
-
-
-
-
-
 
 function startGame() {
-
-    // document.getElementById("lose-message").style.display = "none"; //hides from previous game(s)
-    // document.getElementById("win-message").style.display = "none";
-
-    hideHangmanParts(); // Reset image on game restart
-    
-    document.getElementById("game-info-container").classList.remove("hidden");
+    gameInfoContainer.classList.remove('hidden');
     document.querySelector(".starting-page-container").classList.add("hidden");
 
-  setDifficulty(difficultySelect.value);
-  selectedWord = getRandomWord();
-  guessedLetters = [];
-  wrongGuesses = [];
-  attemptsLeft = 6;
+    hideHangmanParts(); // Reset image on game restart
+    enableAllKeys();
+    
+    document.getElementById("lose-message").classList.add("hidden");
+    document.getElementById("win-message").classList.add("hidden");
+    playAgainButton.classList.add('hidden')
 
-  updateWordDisplay();
-  updateWrongGuesses();
-  updateAttempts();
-  hideHangmanParts();
+    setDifficulty(difficultySelect.value);
+    selectedWord = getRandomWord();
+    guessedLetters = [];
+    wrongGuesses = [];
+    attemptsLeft = 6;
+
+    updateWordDisplay();
+    updateWrongGuesses();
+    updateAttempts();
 }
-
-function disableKey(button) {
-    button.classList.add("disabled");
-}
-
-document.getElementById("play-again-button").addEventListener("click", restartGame);
 
 function restartGame() {
     location.reload(); // Reloads the page to reset the game

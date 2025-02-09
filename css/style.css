@@ -67,17 +67,18 @@ label[for = 'difficulty-select'] {
     padding: 6px;
 }
 
+#start-game-button:hover {
+    background-color: darkblue;
+}
 
 
 
 
-
-/* Game Info Layout */
+/* ======================== Game Info Layout ========================= */
 #game-info-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     width: 100%;
     max-width: 800px;
     margin-top: 20px;
@@ -95,7 +96,7 @@ label[for = 'difficulty-select'] {
 
 
 
-/* Wrong Guesses (Left Side) */
+/* =========================== Wrong Guesses box (Left Side) ================*/
 #wrong-guesses {
     position: absolute;
     left: 10px;
@@ -106,6 +107,7 @@ label[for = 'difficulty-select'] {
     border: 2px solid red;
     border-radius: 5px;
     color: white;
+    background: rgba(255, 0, 0, 0.1);
 }
 
 #wrong-letters {
@@ -118,7 +120,7 @@ label[for = 'difficulty-select'] {
 }
 
 
-/* Attempts Left (Right Side) */
+/* ============================== Attempts Left box (Right Side) ==================== */
 #attempts-container {
     position: absolute;
     right: 10px;
@@ -142,7 +144,7 @@ label[for = 'difficulty-select'] {
     font-weight: bold;
 }
 
-/* Hangman Image */
+/* ======================================== Hangman Image ==========================*/
 #game-container {
     width: 40%;
     display: flex;
@@ -165,7 +167,7 @@ label[for = 'difficulty-select'] {
 
 .hangman-part {
     width: 100%;
-    height: 60.33px; /* image height divided by six parrs */
+    height: 60.33px; /* image height divided by six parrts */
     overflow: hidden;
     position: absolute;
     left:0;
@@ -180,6 +182,7 @@ label[for = 'difficulty-select'] {
 
 }
 
+/* defining the position of each part of the each and the amount (percentage) of the image each part takes up */
 #part-1 { top: 0px; }
 #part-2 { top: 60.33px; }
 #part-3 { top: 120.66px; }
@@ -196,15 +199,24 @@ label[for = 'difficulty-select'] {
 #part-6 img { top: -301.66px; }
 
 
+/* ========================== Win & Lose Messages ========================== */
 
 #lose-message, #win-message {
     display: none;
     font-size: 24px;
     font-weight: bold;
     color: white;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
+#win-message {
+    color: green;
+}
+
+#lose-message {
+    color: red;
+}
+/* ========================== Keyboard Layout ========================== */
 
 #keyboard-container {
     display: flex;
@@ -219,32 +231,47 @@ label[for = 'difficulty-select'] {
 }
 
 .key {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     margin: 5px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     border: 2px solid #000;
     background-color: white;
     color: black;
     cursor: pointer;
     text-align: center;
-    line-height: 40px;
+    line-height: 45px;
     border-radius: 5px;
 }
 
+.key:hover {
+    background-color: rgb(158, 158, 158);
+}
+
+
 .key.disabled {
-    background-color: gray;
+    background-color: rgb(58, 57, 57);
     cursor: not-allowed;
 }
+/* ========================== Play Again Button ========================== */
 
 #play-again-button {
     font-size: 20px;
     padding: 10px;
     border-radius: 5px;
-    background-color: red;
+    background-color: rgb(133, 63, 133);
     color: white;
     cursor: pointer;
     margin-top: 20px;
     display: none; /* Hide it initially */
+}
+
+
+#play-again-button.show {
+    display: block; /* make it appear */
+}
+
+#play-again-button:hover {
+    background-color: purple;
 }

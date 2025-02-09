@@ -8,6 +8,7 @@
     <title>Spaceman Game</title>
 </head>
 <body>
+  <!-- =============================  Start Game Screen ============================= -->
     <div class="starting-page-container">
         <h1>Spaceman Game</h1>
 
@@ -21,14 +22,19 @@
         <button id="start-game-button">Start Game</button>
     </div>
 
-    <!-- Wrong Guesses & Attempts Left Boxes (Initially Hidden) -->
+    <!-- =============================  Game UI Wrong guesses and attempts left boxes (Initially Hidden) ============================= -->
     <div id="game-info-container" class="hidden">
+
+
         <div id="wrong-guesses">
             <h3>Wrong Guesses</h3>
             <div id="wrong-letters"></div>
         </div>
-            <!-- hangman imgage container -->
+
+    <!-- =================== game container (hangman image and word display) ===================== -->
         <div id="game-container">
+                
+    <!--=================== Hangman Image (Initially Hidden) =================== -->
             <div id="hangman-container">
                 <div id="hangman-image">
                     <div class="hangman-part" id="part-1"><img src="https://media.npr.org/assets/img/2016/03/29/ap_090911089838_sq-fccc43c53a0c4c3249cc12a938832a3c3b397aab.jpg?s=1100&c=85&f=webp"></div>
@@ -89,10 +95,10 @@
              <!-- Win & Lose Messages -->
              <p id="win-message" class="hidden">🎉 You Won! 🎉</p>
              <p id="lose-message" class="hidden">❌ You Lose! ❌</p>
-
-             <button id="play-again-button" class="hidden">Play Again</button>
         </div>
-        <button id="play-again-button">Play Again</button>
+        <button id="play-again-button">Play Again ?</button>
     </div>
+ 
+
 </body>
 </html>
