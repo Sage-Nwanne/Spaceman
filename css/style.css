@@ -72,6 +72,36 @@ label[for = 'difficulty-select'] {
 }
 
 
+/* ======================== Instructions container ========================= */
+
+.instructions-container {
+    max-width: 500px;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 10px;
+}
+
+.instructions-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.instructions-container p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.instructions-container ol {
+    text-align: left;
+    font-size: 16px;
+    padding-left: 20px;
+}
+
+
+
 
 
 /* ======================== Game Info Layout ========================= */

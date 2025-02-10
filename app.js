@@ -218,7 +218,11 @@ function startGame() {
 
     hideHangmanParts(); // Reset image on game restart
     enableAllKeys();
+
+
+
     
+    document.querySelector(".instructions-container").classList.add("hidden"); 
     document.getElementById("lose-message").classList.add("hidden");
     document.getElementById("win-message").classList.add("hidden");
     playAgainButton.classList.add('hidden')
