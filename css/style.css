@@ -213,6 +213,11 @@ label[for = 'difficulty-select'] {
     color: green;
 }
 
+#win-message.show {
+    display: block; 
+}
+
+
 #lose-message {
     color: red;
 }

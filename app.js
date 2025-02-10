@@ -169,6 +169,7 @@ function checkWinCondition() {
     let displayedWord = wordDisplay.textContent.replace(/ /g, "");
     if (displayedWord === selectedWord) {
         document.getElementById("win-message").classList.remove("hidden");
+        document.getElementById("win-message").classList.add("show");
         playAgainButton.classList.remove('hidden')
         playAgainButton.classList.add("show");
         disableAllKeys();   
